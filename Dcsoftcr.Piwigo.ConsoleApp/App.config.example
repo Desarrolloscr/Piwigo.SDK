@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <appSettings>
+    <add key="URL" value="http://someurl.com/ws.php"/>
+    <add key="Username" value="someusername"/>
+    <add key="Password" value="somepassword"/>
+  </appSettings>
+</configuration>
