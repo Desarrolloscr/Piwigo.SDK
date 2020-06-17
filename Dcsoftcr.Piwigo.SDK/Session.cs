@@ -1,14 +1,13 @@
-﻿using Dcsoftcr.Piwigo.SDK.Interfaces;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Dcsoftcr.Piwigo.SDK.Interfaces;
 
 namespace Dcsoftcr.Piwigo.SDK
 {
     public class Session : IPWGSession
     {
-        private HttpClient _client;
+        private readonly HttpClient _client;
 
         public Session(HttpClient client)
         {
@@ -17,20 +16,36 @@ namespace Dcsoftcr.Piwigo.SDK
 
         public async Task<string> LogIn(string username, string password)
         {
-            var postData = new Dictionary<String, String>();
-            postData.Add("method", "pwg.session.login");
-            postData.Add("username", username);
-            postData.Add("password", password);
-            postData.Add("Content-Type", "form-data");
-            return await Helper.ProcessRequest(postData, _client);
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                throw new System.ArgumentException("message", nameof(username));
+            }
+
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                throw new System.ArgumentException("message", nameof(password));
+            }
+
+            var postData = new Dictionary<string, string>
+            {
+                { "method", "pwg.session.login" },
+                { "username", username },
+                { "password", password },
+                { "Content-Type", "form-data" }
+            };
+
+            return await Helper.ProcessRequest(postData, _client).ConfigureAwait(false);
         }
 
         public async Task<string> GetStatus()
         {
-            var postData = new Dictionary<String, String>();
-            postData.Add("method", "pwg.session.getStatus");
-            postData.Add("Content-Type", "form-data");
-            return await Helper.ProcessRequest(postData, _client);
+            var postData = new Dictionary<string, string>
+            {
+                { "method", "pwg.session.getStatus" },
+                { "Content-Type", "form-data" }
+            };
+
+            return await Helper.ProcessRequest(postData, _client).ConfigureAwait(false);
         }
 
     }

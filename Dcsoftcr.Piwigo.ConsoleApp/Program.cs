@@ -1,15 +1,14 @@
-﻿using Dcsoftcr.Piwigo.SDK;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Configuration;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Dcsoftcr.Piwigo.SDK;
 
 namespace Dcsoftcr.Piwigo.ConsoleApp
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static async Task Main()
         {
             Console.WriteLine("Hello World!");
 

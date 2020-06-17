@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Dcsoftcr.Piwigo.SDK.Configuration
+﻿namespace Dcsoftcr.Piwigo.SDK.Configuration
 {
     public class PiwigoConfiguration
     {
