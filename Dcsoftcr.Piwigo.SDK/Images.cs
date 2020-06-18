@@ -30,14 +30,10 @@ namespace Dcsoftcr.Piwigo.SDK
             }
 
             using var form = new MultipartFormDataContent();
-            using (var stringContent = new StringContent("pwg.images.addSimple"))
-            {
-                form.Add(stringContent, "method");
-            }
-            using (var stringContent = new StringContent(id))
-            {
-                form.Add(stringContent, "name");
-            }
+            var method = new StringContent("pwg.images.addSimple");
+            form.Add(method, "method");
+            var name = new StringContent(id);
+            form.Add(name, "name");
 
             byte[] fileBytes;
             using (var ms = new MemoryStream())
@@ -45,15 +41,14 @@ namespace Dcsoftcr.Piwigo.SDK
                 file.CopyTo(ms);
                 fileBytes = ms.ToArray();
             }
-            using (var fileContent = new ByteArrayContent(fileBytes))
+            var fileContent = new ByteArrayContent(fileBytes);
+            fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
             {
-                fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
-                {
-                    Name = "image",
-                    FileName = file.FileName
-                };
-                form.Add(fileContent, "image");
-            }
+                Name = "image",
+                FileName = file.FileName
+            };
+            form.Add(fileContent, "image");
+
             try
             {
                 using var response = await _client.PostAsync("?format=json", form).ConfigureAwait(false);
@@ -68,6 +63,12 @@ namespace Dcsoftcr.Piwigo.SDK
             catch (Exception)
             {
                 return null;
+            }
+            finally
+            {
+                fileContent.Dispose();
+                name.Dispose();
+                method.Dispose();
             }
         }
     }
