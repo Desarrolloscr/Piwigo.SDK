@@ -1283,6 +1283,15 @@ SELECT id, name, permalink
     $url_params['category'] = $category;
   }
 
+  // My Update
+  $query = '
+  SELECT path 
+  FROM '. IMAGES_TABLE .'
+  where id = '. $image_id .';';
+  $result = pwg_query($query);
+  $urlPath = pwg_db_fetch_assoc($result);
+  //----------
+  
   // update metadata from the uploaded file (exif/iptc), even if the sync
   // was already performed by add_uploaded_file().
   require_once(PHPWG_ROOT_PATH.'admin/include/functions_metadata.php');
@@ -1290,7 +1299,8 @@ SELECT id, name, permalink
 
   return array(
     'image_id' => $image_id,
-    'url' => make_picture_url($url_params),
+    //'url' => make_picture_url($url_params),
+	'url' => $urlPath,
     );
 }
 
