@@ -62,7 +62,7 @@ namespace Dcsoftcr.Piwigo.SDK
             }
             catch (Exception)
             {
-                return null;
+                throw;
             }
             finally
             {
